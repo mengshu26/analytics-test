@@ -1,0 +1,14 @@
+Hi <product stakeholder>!
+
+I had a look through the existing data for receipts, users and brands, and have a few questions for you. Do you know how is the data captured? Are some of these machine scanned and some individual user entry? Do we have any structure in place to improve user entry data quality? like pulling in drop downs and limiting skipping questions. 
+
+As I was going through some exercises to find out some of our top performing brands, I discovered some data quality issues: 
+- a specific issue is that we aren't capturing any receipts that have been accepted to take rewards. Are they potentially entered as a different name.. like "finished"? or perhaps a bug in the transactional database, who is changing the receipt status and how are they changed? 
+
+In order to best optimize performance and resources in the future, it would be helpful to understand where most data tasks would be done for your team - 1. Would your team be discovering intelligence and making decisions through querying the database directly in sql? or using python? or perhaps through a BI tool that's connected to our database? What's your teams comfort level in terms of coding and analyzing data? 2. do you anticipate using data assets for application production? or just for analytics? 
+
+As our data size increases, we'll need to enable our systems to be performant and scale. 1. we'll need to make sure that the database has enough space and would be able to handle all of the queries on the data. Would need your help in understanding how much we anticipate to grow in customer base and transactions. 2. I will also set up a monitoring system so that we can quickly see how long each data transformation model is taking to run. I'll do this by parsing dbt logs for mode run time and plotting them. If our run times are increasing, we'll then have a look at the longest running models and figure out ways to make them faster. One strategy would be to incrementalize - this means that instead of rebuilding all of the history for a model with every hourly run, we only update records from the most recent days. This would be very useful in speeding up our runtimes with a more informative set of models. 
+
+
+Thanks,
+Amy
