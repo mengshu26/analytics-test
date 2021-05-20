@@ -40,6 +40,8 @@ createdb postgres
 3. Once the profiles.yml is set up, run `dbt debug` to check that the connection works.
 
 4. `dbt run` in the command line to create the transformations!
+5. the models in `/fetch_dbt/fetch_takehome/models/json_extract/` extracts the json keys and put them into a table
+6. the models in `/fetch_dbt/fetch_takehome/models/transformations/` does the necessary transformations on the data to optimize for queries 
 
 ### Query the database to answer business questions 
 - refer to `queries.sql`
