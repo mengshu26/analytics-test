@@ -9,35 +9,44 @@ This document will show:
  - Evaluate data quality
  - Send email to Stakeholder 
  
+### ERD 
+1. There are many ways to model this data. Since we're running analytics on this, we'll use an OLAP approach. Less normalization and less joins needed to perform analytical queries 
+2. There were several fields that weren't documented, which were discovered through `Fetch_EDA.ipynb` , most of these are describing qualities of specific items on a receipt, nested in a json field. A separate items table would be optimal here. Refer to `Fetch_ER_Diagram (1).pdf`  
 
 
-Do you have postgres installed?
-Do you have dbt installed? Yes? You have postgres installed!
-If not, instructions can be found on their website
-Create your target database
-There are many ways to do this, but I used this tutorial to get me started
+### Loading data into Postgres
+
+1. Have postgres installed! check out their [website](https://www.postgresql.org/download/)
+2. Create target database. There are many ways to do this, I used this [tutorial](https://www.robinwieruch.de/postgres-sql-macos-setup) to get me started
 At a high level, it was these commands
+```
 initdb /usr/local/var/postgres
 pg_ctl -D /usr/local/var/postgres start
-createdb netlify_takehome
-After this I used Postico, because using a CLI to interact with a database makes me uncomfortable
-Connect to the database with Postico
-All you should need to change from default is the database
-Mine is called netlify_takehome
-Those same credentials will be used in your target config
-An example can be found in configs/target-postgres
-Let it fly
-Run your tap and pipe it to the target using proper configs
-~/.virtualenvs/tap-github/bin/tap-github --config tap-github-config.json --properties properties.json | ~/.virtualenvs/target-postgres/bin/target-postgres --config target-postgres-config.json >> state.json
-Transform the data with dbt
-In this example, we will be using the dbt CLI, you can check if you have it installed by typing dbt --version in the command line. If it isn't installed, please review their official instructions.
+createdb postgres
+```
 
-You will need to checkout the repository from GitHub, or receive the files in a .zip
+3. I then used Dbeaver to interact with the database 
+ - connect to the database using dbeaver 
+ - create the tables using this command in dbeaver: `CREATE TABLE fetch_takehome.receipts (json_txt jsonb);`
+ - copy the data into the table on the command line using this: 
+`cat receipts.json | psql -h localhost -p 5432 postgres -U postgres -c "COPY fetch_takehome.receipts (json_txt) FROM STDIN;"`
 
-Before you can run the transformations you will need to add a connection to the local Postgres database for this model.
 
-If it doesn't exist, create a profiles.yml file in the ~/.dbt/ directory. You can use this page from the dbt docs as a template. Replate company-name with github_data_model
+### Transform Data with dbt 
+1. check if dbt is installed by `dbt --version` in the command line, here are [instructions](https://docs.getdbt.com/dbt-cli/installation/) if it isn't 
 
-Once you have the profiles.yml set up, run dbt debug to check that your connection works.
+2. add a connection to the local Postgres database for this model. If it doesn't exist, create a profiles.yml file in the ~/.dbt/ directory. use [this](https://docs.getdbt.com/reference/warehouse-profiles/postgres-profile/) as a template if necessary. 
 
-Once that is done, you should be able to dbt run and create the transformations. To view docs, run dbt docs generate and then dbt docs serve.
+3. Once the profiles.yml is set up, run `dbt debug` to check that the connection works.
+
+4. `dbt run` in the command line to create the transformations!
+
+### Query the database to answer business questions 
+- refer to `queries.sql`
+
+
+### checking data quality 
+- there are definitely a lot to be worked on in terms of data quality, generally I will start with checking that tables are joinable, and for duplications. refer to `data_quality.sql`
+
+### Send an email to a stakeholder
+- assuming the stakeholder is in product. Refer to `email.txt`
