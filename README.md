@@ -18,6 +18,7 @@ This document will show:
 
 1. Have postgres installed! check out their [website](https://www.postgresql.org/download/)
 2. Create target database. There are many ways to do this, I used this [tutorial](https://www.robinwieruch.de/postgres-sql-macos-setup) to get me started
+
 At a high level, it was these commands
 ```
 initdb /usr/local/var/postgres
@@ -35,7 +36,7 @@ createdb postgres
 ### Transform Data with dbt 
 1. check if dbt is installed by `dbt --version` in the command line, here are [instructions](https://docs.getdbt.com/dbt-cli/installation/) if it isn't 
 
-2. add a connection to the local Postgres database for this model. If it doesn't exist, create a profiles.yml file in the ~/.dbt/ directory. use [this](https://docs.getdbt.com/reference/warehouse-profiles/postgres-profile/) as a template if necessary. 
+2. add a connection to the local Postgres database for this model. If it doesn't exist, create a profiles.yml file in the `~/.dbt/` directory. use [this](https://docs.getdbt.com/reference/warehouse-profiles/postgres-profile/) as a template if necessary. 
 
 3. Once the profiles.yml is set up, run `dbt debug` to check that the connection works.
 
